@@ -95,13 +95,16 @@ export function renderCompareTable(spec) {
       return el('tr', { class: 'ct__section' }, el('th', { colspan: 3, text: r.label }));
     }
     const cls = 'ct__row' + (r.strong ? ' ct__row--strong' : '');
+    // Colorazione per segno solo sulle righe che la chiedono esplicitamente (r.signed):
+    // in una tabella di costi, dipingere di verde ogni numero positivo sarebbe fuorviante.
+    const sc = r.signed ? signClass : () => '';
     return el('tr', { class: cls }, [
       el('th', { class: 'ct__voce' }, [
         r.label,
         r.note ? el('span', { class: 'ct__rownote', text: r.note }) : null,
       ]),
-      el('td', { class: 'ct__num' + signClass(r.a, r.kind) }, fmtCell(r.a, r.kind)),
-      el('td', { class: 'ct__num' + signClass(r.b, r.kind) }, fmtCell(r.b, r.kind)),
+      el('td', { class: 'ct__num' + sc(r.a, r.kind) }, fmtCell(r.a, r.kind)),
+      el('td', { class: 'ct__num' + sc(r.b, r.kind) }, fmtCell(r.b, r.kind)),
     ]);
   });
 
