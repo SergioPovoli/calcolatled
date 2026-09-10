@@ -1,4 +1,4 @@
-# conti · srl
+# CalcolAtled
 
 Dashboard di calcolatori per l'**ottimizzazione fiscale legale di una SRL italiana**.
 HTML + CSS + JavaScript puro: nessun framework, nessuno step di build, nessuna
