@@ -50,8 +50,19 @@ export default {
     compensoDeducibileIrap: false,
   },
 
-  fonti: ['ires', 'irap', 'dividendo', 'irpefScaglioni', 'gestioneSeparata', 'gsMassimale',
-    'gsQuotaCollaboratore', 'compensoAmmCassa', 'addizionaliIrpef', 'detrazioneLavoroDip'],
+  // Il default (aliquotaGs 33,72%, nessun altro reddito) corrisponde al profilo
+  // "solo amministratore". Con altra copertura previdenziale l'aliquota GS scende
+  // al 24% e si presume un reddito IRPEF pregresso da adeguare, così il compenso
+  // si colloca sullo scaglione marginale corretto.
+  profileDefaults: {
+    amministratoreAltraCopertura: {
+      aliquotaGs: rate('gestioneSeparataConCopertura'),
+      redditoIrpefPregresso: 35000,
+    },
+  },
+
+  fonti: ['ires', 'irap', 'dividendo', 'irpefScaglioni', 'gestioneSeparata', 'gestioneSeparataConCopertura',
+    'gsMassimale', 'gsQuotaCollaboratore', 'compensoAmmCassa', 'addizionaliIrpef', 'detrazioneLavoroDip'],
 
   compute(v, { scaglioni }) {
     const U = Math.max(0, v.utileAnteImposte);

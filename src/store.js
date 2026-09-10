@@ -4,20 +4,35 @@
 const KEY = 'calcolatled:v1';
 const listeners = new Set();
 
+// Impostazioni globali (non per-calcolatore). profilo:
+//  'soloAmministratore' — amministratore in Gestione Separata senza altra copertura
+//     previdenziale né altri redditi rilevanti: aliquota GS 33,72%, confronto letto
+//     dal lato dell'incasso personale netto.
+//  'amministratoreAltraCopertura' — amministratore che ha anche un lavoro dipendente
+//     (o è pensionato): aliquota GS ridotta al 24% e altri redditi IRPEF preimpostati
+//     a un valore realistico da adeguare, per collocare compenso e benefit sullo
+//     scaglione marginale corretto.
+//  'standard' — nessuna assunzione: le aliquote restano quelle da lavoro dipendente.
+const DEFAULT_SETTINGS = { profilo: 'soloAmministratore' };
+
 let state = load();
 
 function load() {
   try {
     const raw = localStorage.getItem(KEY);
-    return raw ? JSON.parse(raw) : { inputs: {} };
+    const saved = raw ? JSON.parse(raw) : {};
+    return {
+      inputs: saved.inputs || {},
+      settings: { ...DEFAULT_SETTINGS, ...(saved.settings || {}) },
+    };
   } catch {
-    return { inputs: {} };
+    return { inputs: {}, settings: { ...DEFAULT_SETTINGS } };
   }
 }
 
 function persist() {
   try {
-    localStorage.setItem(KEY, JSON.stringify({ inputs: state.inputs }));
+    localStorage.setItem(KEY, JSON.stringify({ inputs: state.inputs, settings: state.settings }));
   } catch { /* storage non disponibile: si prosegue in memoria */ }
 }
 
@@ -43,6 +58,16 @@ export function resetInputs(id) {
 
 export function isTouched(id) {
   return Boolean(state.inputs[id]);
+}
+
+export function getSetting(key) {
+  return state.settings[key];
+}
+
+export function setSetting(key, value) {
+  state.settings = { ...state.settings, [key]: value };
+  persist();
+  emit();
 }
 
 export function setResult(id, result) {

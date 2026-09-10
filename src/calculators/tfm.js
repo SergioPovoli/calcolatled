@@ -49,7 +49,16 @@ export default {
     tfmCap: rate('tfmCap'),
   },
 
-  fonti: ['tfmDataCerta', 'tfmCap', 'ires', 'irpefScaglioni', 'addizionaliIrpef', 'gestioneSeparata'],
+  // Default = profilo "solo amministratore" (contributi su GS 33,72%). Con altra
+  // copertura previdenziale la quota contributi personale scende (GS al 24%).
+  profileDefaults: {
+    amministratoreAltraCopertura: {
+      aliquotaContrPersona: rate('gsQuotaCollaboratore') * rate('gestioneSeparataConCopertura'),
+    },
+  },
+
+  fonti: ['tfmDataCerta', 'tfmCap', 'ires', 'irpefScaglioni', 'addizionaliIrpef', 'gestioneSeparata',
+    'gestioneSeparataConCopertura'],
 
   compute(v) {
     const A = Math.max(0, v.accantonamentoAnnuo);

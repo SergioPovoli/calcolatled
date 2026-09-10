@@ -11,10 +11,10 @@
   background: var(--paper);
   border-bottom: 1px solid var(--rule-strong);
 }
-.brand { display: flex; align-items: baseline; gap: .25rem; font-weight: 700; letter-spacing: .02em; }
+.brand { display: flex; align-items: baseline; font-weight: 700; letter-spacing: .02em; }
 .brand:hover { text-decoration: none; }
 .brand__mark { color: var(--ink); }
-.brand__dot { color: var(--margin-rule); font-weight: 700; }
+.brand__co { color: var(--margin-rule); }
 
 .nav { display: flex; gap: 1.1rem; flex: 1; }
 .nav__link { color: var(--muted); font-size: .9rem; padding: .15rem 0; border-bottom: 2px solid transparent; }
@@ -25,6 +25,20 @@
 .topbar__agg:hover { text-decoration: none; }
 .topbar__agg-label { font-size: .68rem; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
 .topbar__agg-value { font-size: 1rem; color: var(--accent); font-weight: 600; }
+
+.profilo {
+  display: inline-flex; align-items: center; gap: .4rem;
+  padding: .2rem .2rem .2rem .55rem; border: 1px solid var(--rule-strong); border-radius: 999px;
+  font-size: .78rem; color: var(--muted); cursor: pointer; white-space: nowrap;
+}
+.profilo:hover { color: var(--ink); }
+.profilo.is-on { border-color: var(--accent); color: var(--accent); background: var(--accent-weak); }
+.profilo__text { text-transform: uppercase; letter-spacing: .06em; }
+.profilo__select {
+  width: auto; font-size: .78rem; padding: .15rem 1.4rem .15rem .4rem;
+  border-radius: 999px; border-color: var(--rule-strong); background-color: var(--surface);
+}
+.profilo.is-on .profilo__select { border-color: var(--accent); color: var(--accent); }
 
 /* --- Content shell ------------------------------------------------------- */
 
@@ -93,6 +107,7 @@
 .metodo summary { cursor: pointer; padding: .5rem 0; font-size: .85rem; color: var(--ink-soft); font-weight: 600; }
 .metodo ul { margin: .2rem 0 .8rem; padding-left: 1.1rem; }
 .metodo li { font-size: .84rem; color: var(--muted); margin-bottom: .35rem; }
+.metodo li.metodo__profilo { color: var(--accent); font-weight: 500; }
 
 .panel { margin-bottom: 1.8rem; }
 .panel__head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; }
@@ -203,6 +218,7 @@
 .delta--neg .delta__value { color: var(--cost); }
 .delta__fav { font-size: .9rem; font-weight: 600; }
 .delta__note { font-size: .78rem; color: var(--muted); margin: .3rem 0 0; }
+.delta__note--profilo { color: var(--accent); font-weight: 600; }
 
 /* --- Sources / disclaimer -------------------------------------- */
 

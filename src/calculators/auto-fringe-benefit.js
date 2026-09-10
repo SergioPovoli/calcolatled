@@ -61,6 +61,19 @@ export default {
     ...defaultComuni(),
   },
 
+  profileDefaults: {
+    soloAmministratore: {
+      isAmministratore: true,
+      aliquotaContrPersona: rate('gsQuotaCollaboratore') * rate('gestioneSeparata'),
+      aliquotaContrAzienda: (1 - rate('gsQuotaCollaboratore')) * rate('gestioneSeparata'),
+    },
+    amministratoreAltraCopertura: {
+      isAmministratore: true,
+      aliquotaContrPersona: rate('gsQuotaCollaboratore') * rate('gestioneSeparataConCopertura'),
+      aliquotaContrAzienda: (1 - rate('gsQuotaCollaboratore')) * rate('gestioneSeparataConCopertura'),
+    },
+  },
+
   fonti: ['autoPercBEV', 'autoPercPHEV', 'autoPercAltri', 'autoKmConvenzionali', 'autoDedDipendente',
     'autoDedAmministratore', 'ivaAutoPromiscuo', 'irpefScaglioni', 'addizionaliIrpef',
     'contribDipendenteQuota', 'contribDatoreQuota', 'ires'],
@@ -112,6 +125,7 @@ export default {
         note: `Fringe benefit ACI lordo ${fmt(fringeLordo)} · quota auto deducibile per la SRL ${fmt(quotaDedAuto)} ` +
           `(${((quotaDedAuto / (v.costoAnnuoAutoSrl || 1)) * 100).toFixed(0)}% del costo).`,
       },
+      vantaggioPersona,
       risparmioSrl: Math.max(0, deltaNetto),
       risparmioTipo: 'permanente',
     };

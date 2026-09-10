@@ -37,6 +37,19 @@ export default {
     ...defaultComuni(),
   },
 
+  profileDefaults: {
+    soloAmministratore: {
+      isAmministratore: true,
+      aliquotaContrPersona: rate('gsQuotaCollaboratore') * rate('gestioneSeparata'),
+      aliquotaContrAzienda: (1 - rate('gsQuotaCollaboratore')) * rate('gestioneSeparata'),
+    },
+    amministratoreAltraCopertura: {
+      isAmministratore: true,
+      aliquotaContrPersona: rate('gsQuotaCollaboratore') * rate('gestioneSeparataConCopertura'),
+      aliquotaContrAzienda: (1 - rate('gsQuotaCollaboratore')) * rate('gestioneSeparataConCopertura'),
+    },
+  },
+
   fonti: ['buoniPastoCartacei', 'buoniPastoElettronici', 'irpefScaglioni', 'addizionaliIrpef',
     'contribDipendenteQuota', 'contribDatoreQuota', 'ires'],
 
@@ -88,6 +101,7 @@ export default {
         favorevole: deltaNetto >= 0 ? 'Conviene il buono pasto' : 'Conviene l’aumento di stipendio',
         note: `Quota annua esente ${fmt(quotaEsenteAnnua)}, quota imponibile ${fmt(quotaImponibile)}.`,
       },
+      vantaggioPersona,
       risparmioSrl: Math.max(0, deltaNetto),
       risparmioTipo: 'permanente',
     };

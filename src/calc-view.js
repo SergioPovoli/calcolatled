@@ -1,13 +1,40 @@
 import { el, renderField, renderCompareTable, renderDelta, renderBreakEven, renderSources, renderDisclaimer } from './render.js';
 import { getCalculator } from './registry.js';
 import { RATES } from './rates.js';
-import { getInputs, setInput, resetInputs, setResult } from './store.js';
+import { getInputs, setInput, resetInputs, setResult, getSetting } from './store.js';
+import { fmtEuro } from './format.js';
 
-const ENV = { scaglioni: RATES.irpefScaglioni.value };
+const NOTE_PROFILO = {
+  soloAmministratore:
+    'Profilo attivo: solo amministratore in Gestione Separata, nessun’altra copertura previdenziale ' +
+    'né altri redditi rilevanti. Aliquota GS 33,72% (≈11,24% persona / ≈22,48% società); il confronto ' +
+    'è letto dal lato dell’incasso personale netto. Se hai altri redditi IRPEF, compila i relativi campi: ' +
+    'gli scaglioni spostano l’aliquota marginale su compenso e benefit.',
+  amministratoreAltraCopertura:
+    'Profilo attivo: amministratore che ha anche un lavoro dipendente (o è pensionato). Aliquota ' +
+    'Gestione Separata ridotta al 24% (≈8% persona / ≈16% società). I campi "altri redditi IRPEF" ' +
+    'partono da un valore realistico da adeguare ai tuoi importi effettivi: per gli scaglioni IRPEF ' +
+    'compenso e benefit si sommano al reddito già presente e scontano l’aliquota marginale che ne ' +
+    'risulta. Attenzione ai limiti cumulativi su tutti i datori: plafond fringe benefit 1.000/2.000 €, ' +
+    'massimale Gestione Separata, detrazioni da lavoro dipendente (una sola dotazione).',
+};
+
+// Default effettivi: i valori base del calcolatore, poi lo strato del profilo globale
+// (solo per i campi che il profilo tocca), poi gli input salvati dall'utente — che vincono.
+function defaultsFor(calc) {
+  const profilo = getSetting('profilo');
+  const strato = calc.profileDefaults && calc.profileDefaults[profilo];
+  return strato ? { ...calc.defaults, ...strato } : calc.defaults;
+}
 
 export function computeCalculator(calc) {
-  const v = getInputs(calc.id, calc.defaults);
-  const result = calc.compute(v, ENV);
+  const v = getInputs(calc.id, defaultsFor(calc));
+  const profilo = getSetting('profilo');
+  const result = calc.compute(v, { scaglioni: RATES.irpefScaglioni.value, profilo });
+  if (profilo !== 'standard' && result.delta && typeof result.vantaggioPersona === 'number') {
+    result.delta.notaProfilo = `Come amministratore ti porti a casa ${fmtEuro(result.vantaggioPersona, true)} ` +
+      'in più all’anno, a parità di costo per la società.';
+  }
   setResult(calc.id, result);
   return { v, result };
 }
@@ -21,10 +48,18 @@ export function renderCalcView(id) {
   const fieldsGrid = el('div', { class: 'fields' },
     calc.fields.map((f) => renderField(f, v[f.key], (val) => setInput(calc.id, f.key, val))));
 
-  const note = calc.noteMetodologiche
+  const notaProfilo = getSetting('profilo') !== 'standard' ? NOTE_PROFILO[getSetting('profilo')] : null;
+  const noteVoci = [
+    ...(notaProfilo ? [notaProfilo] : []),
+    ...(calc.noteMetodologiche || []),
+  ];
+  const note = noteVoci.length
     ? el('details', { class: 'metodo' }, [
         el('summary', { text: 'Note metodologiche e assunzioni' }),
-        el('ul', {}, calc.noteMetodologiche.map((n) => el('li', { text: n }))),
+        el('ul', {}, noteVoci.map((n, i) => el('li', {
+          class: notaProfilo && i === 0 ? 'metodo__profilo' : '',
+          text: n,
+        }))),
       ])
     : null;
 

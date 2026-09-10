@@ -130,7 +130,7 @@ function signClass(v, kind) {
 
 // --- Pannello del delta netto -----------------------------------------------
 
-// delta: { label, value, favorevole (stringa), note }
+// delta: { label, value, favorevole (stringa), note, notaProfilo }
 export function renderDelta(delta) {
   const cls = 'delta ' + (delta.value >= 0 ? 'delta--pos' : 'delta--neg');
   return el('div', { class: cls }, [
@@ -138,6 +138,7 @@ export function renderDelta(delta) {
     el('div', { class: 'delta__value', text: fmtEuro(Math.abs(delta.value), true) }),
     delta.favorevole ? el('div', { class: 'delta__fav', text: delta.favorevole }) : null,
     delta.note ? el('p', { class: 'delta__note', text: delta.note }) : null,
+    delta.notaProfilo ? el('p', { class: 'delta__note delta__note--profilo', text: delta.notaProfilo }) : null,
   ]);
 }
 

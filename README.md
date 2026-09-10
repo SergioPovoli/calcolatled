@@ -1,10 +1,35 @@
-# conti · srl
+# CalcolAtled
+
+**CalcolAtled** — dalla fusione di *calcolatrice* e *ATLED*, il nome dell'azienda.
 
 Dashboard di calcolatori per l'**ottimizzazione fiscale legale di una SRL italiana**.
 HTML + CSS + JavaScript puro: nessun framework, nessuno step di build, nessuna
 dipendenza esterna. Tutti i calcoli girano nel browser; nessun dato lascia il dispositivo.
 
 ## Calcolatori
+
+### Profilo (selettore globale nell'header)
+
+Dice *chi sei rispetto alla società* e preimposta le aliquote contributive e la
+lettura dei confronti. Tre opzioni:
+
+| Profilo | Gestione Separata | Altri redditi IRPEF | Uso |
+|---|---|---|---|
+| **solo amministratore** (default) | 33,72% (≈11,24% persona / ≈22,48% società) | nessuno: il compenso è l'unico reddito rilevante | amministratore senza altra copertura previdenziale |
+| **amministratore + altro lavoro** | 24% (≈8% persona / ≈16% società) | preimpostati a 35.000 € **da adeguare** | amministratore che è anche lavoratore dipendente o è pensionato |
+| **nessun profilo** | — (restano le aliquote da lavoro dipendente 9,19% / ~30%) | nessuna assunzione | confronto neutro |
+
+Con un profilo attivo il delta netto riporta quanto ti porti a casa in più
+all'anno e la prima nota metodologica esplicita l'assunzione. **Gli scaglioni
+IRPEF** non sono un preset: compenso e benefit si sommano agli *altri redditi
+IRPEF* che indichi nei campi del calcolatore e scontano l'aliquota marginale che
+ne risulta — con "amministratore + altro lavoro" quei campi partono da un valore
+realistico ma vanno messi sui tuoi importi effettivi. I valori che modifichi a
+mano restano: solo i campi intatti seguono il profilo.
+
+Limiti **cumulativi su tutti i datori** che nessun profilo può conoscere e che
+restano da verificare a mano: plafond fringe benefit 1.000 / 2.000 €, massimale
+Gestione Separata, detrazioni da lavoro dipendente (una sola dotazione).
 
 ### Compensi e utili — confronto SRL vs socio/amministratore
 
@@ -120,7 +145,7 @@ Non c'è nulla da compilare né da installare.
    ```sh
    git init
    git add .
-   git commit -m "conti · srl — dashboard calcoli fiscali SRL"
+   git commit -m "CalcolAtled — dashboard calcoli fiscali SRL"
    git branch -M main
    git remote add origin git@github.com:<utente>/<repo>.git
    git push -u origin main

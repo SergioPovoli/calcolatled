@@ -39,6 +39,19 @@ export default {
     ...defaultComuni(),
   },
 
+  profileDefaults: {
+    soloAmministratore: {
+      isAmministratore: true,
+      aliquotaContrPersona: rate('gsQuotaCollaboratore') * rate('gestioneSeparata'),
+      aliquotaContrAzienda: (1 - rate('gsQuotaCollaboratore')) * rate('gestioneSeparata'),
+    },
+    amministratoreAltraCopertura: {
+      isAmministratore: true,
+      aliquotaContrPersona: rate('gsQuotaCollaboratore') * rate('gestioneSeparataConCopertura'),
+      aliquotaContrAzienda: (1 - rate('gsQuotaCollaboratore')) * rate('gestioneSeparataConCopertura'),
+    },
+  },
+
   fonti: ['fringeSoglia2026', 'fringeSoglia2026Figli', 'fringeSogliaOrdinaria', 'irpefScaglioni',
     'addizionaliIrpef', 'contribDipendenteQuota', 'contribDatoreQuota', 'ires'],
 
@@ -91,6 +104,7 @@ export default {
           ? `Importo oltre la soglia di ${fmt(soglia)}: l’intero importo concorre al reddito (franchigia azzerata).`
           : `Importo entro la soglia di ${fmt(soglia)}: nessuna imposta né contributo per la persona.`,
       },
+      vantaggioPersona,
       risparmioSrl: Math.max(0, deltaNetto),
       risparmioTipo: 'permanente',
     };

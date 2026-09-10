@@ -1,6 +1,6 @@
 import { el } from './render.js';
 import { startRouter, currentRoute, onRoute } from './router.js';
-import { subscribe } from './store.js';
+import { subscribe, getSetting, setSetting } from './store.js';
 import { fmtEuro } from './format.js';
 import { renderHome } from './home.js';
 import { renderCalcView } from './calc-view.js';
@@ -17,10 +17,9 @@ function header() {
     class: 'nav__link' + (isActive(route, href) ? ' is-active' : ''),
   });
   return el('header', { class: 'topbar' }, [
-    el('a', { class: 'brand', href: '#/' }, [
-      el('span', { class: 'brand__mark', text: 'conti' }),
-      el('span', { class: 'brand__dot', text: '·' }),
-      el('span', { class: 'brand__mark', text: 'srl' }),
+    el('a', { class: 'brand', href: '#/', title: 'CalcolAtled — calcolatrice + ATLED' }, [
+      el('span', { class: 'brand__mark', text: 'Calcol' }),
+      el('span', { class: 'brand__co', text: 'Atled' }),
     ]),
     el('nav', { class: 'nav' }, [
       link('#/', 'Calcolatori'),
@@ -31,6 +30,29 @@ function header() {
       el('span', { class: 'topbar__agg-label', text: 'risparmio SRL / anno' }),
       el('span', { class: 'topbar__agg-value', text: fmtEuro(agg.permanente) }),
     ]),
+    profiloToggle(),
+  ]);
+}
+
+const PROFILI = [
+  ['soloAmministratore', 'solo amministratore'],
+  ['amministratoreAltraCopertura', 'amministratore + altro lavoro'],
+  ['standard', 'nessun profilo'],
+];
+
+function profiloToggle() {
+  const val = getSetting('profilo');
+  return el('label', {
+    class: 'profilo' + (val !== 'standard' ? ' is-on' : ''),
+    title: 'Chi sei rispetto alla società: amministratore in Gestione Separata (senza o con ' +
+      'altra copertura previdenziale) oppure nessuna assunzione. Determina le aliquote ' +
+      'contributive predefinite e la lettura dei confronti dal lato dell’incasso personale.',
+  }, [
+    el('span', { class: 'profilo__text', text: 'profilo' }),
+    el('select', {
+      id: 'profilo-toggle', class: 'profilo__select',
+      onchange: (e) => setSetting('profilo', e.target.value),
+    }, PROFILI.map(([v, label]) => el('option', { value: v, selected: v === val }, label))),
   ]);
 }
 
@@ -44,7 +66,7 @@ function isActive(route, href) {
 function footer() {
   return el('footer', { class: 'sitefoot' }, [
     el('p', {}, [
-      el('strong', { text: 'conti · srl' }),
+      el('strong', { text: 'CalcolAtled' }),
       ' — strumento illustrativo per fare i propri conti di ottimizzazione fiscale legale di una SRL italiana. ',
       'Non è consulenza fiscale. Ogni strategia va validata con un commercialista: la linea fra ottimizzazione lecita ed elusione dipende dal caso concreto — documentazione, congruità degli importi, sostanza economica dell’operazione, delibere con data certa. ',
       'Valori 2026, soggetti a modifica a ogni legge di bilancio: vedi ',

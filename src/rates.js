@@ -55,6 +55,13 @@ export const RATES = {
     url: 'https://www.inps.it/it/it/inps-comunica/notizie/dettaglio-news-page.news.2026.02.gestione-separata-le-aliquote-contributive-per-il-2026.html',
     nota: '33,72% (33,00% IVS + 0,72% aliquote minori). 24% se già pensionato o con altra copertura obbligatoria; 35,03% con DIS-COLL; 26,07% professionisti con partita IVA senza cassa.',
   },
+  gestioneSeparataConCopertura: {
+    value: 0.24, unit: 'perc',
+    label: 'Gestione Separata INPS — amministratore già iscritto ad altra previdenza obbligatoria o titolare di pensione (2026)',
+    fonte: 'INPS — Circolare n. 8 del 3/2/2026',
+    url: 'https://www.inps.it/it/it/inps-comunica/notizie/dettaglio-news-page.news.2026.02.gestione-separata-le-aliquote-contributive-per-il-2026.html',
+    nota: 'Aliquota ridotta al 24% per chi è già assicurato presso un’altra gestione previdenziale obbligatoria (tipicamente i lavoratori dipendenti) o è titolare di pensione diretta. Ripartizione invariata: 1/3 a carico del collaboratore/amministratore, 2/3 a carico della società committente.',
+  },
   gsMassimale: {
     value: 122295, unit: 'euro',
     label: 'Massimale contributivo annuo Gestione Separata 2026',
