@@ -1,0 +1,218 @@
+// Fonte unica di verità per ogni aliquota, soglia o valore fissato per legge.
+// Ogni voce: { value, unit, label, fonte, url, nota, locked }.
+// unit: 'perc' | 'euro' | 'num' | 'scaglioni'
+// La pagina #/fonti è generata da questo oggetto: non può divergere dal codice.
+// Verifica effettuata a settembre 2026. Fonti in prevalenza secondarie (studi/portali)
+// datate 2026: ogni valore va confermato sui testi normativi / prassi Agenzia Entrate.
+
+export const RATES = {
+  ires: {
+    value: 0.24, unit: 'perc',
+    label: 'IRES — aliquota ordinaria',
+    fonte: 'Informazione Fiscale — IRES 2026',
+    url: 'https://www.informazionefiscale.it/ires-codice-tributo-f24-calcolo-aliquota-cos-e',
+    nota: 'IRES premiale al 20% limitata al solo periodo d’imposta 2025 (L. 207/2024): non prorogata dalla Legge di Bilancio 2026 (L. 199/2025).',
+  },
+  irap: {
+    value: 0.039, unit: 'perc',
+    label: 'IRAP — aliquota ordinaria società di capitali',
+    fonte: 'Optlyx — Guida IRAP 2026',
+    url: 'https://optlyx.com/guida-irap-2026',
+    nota: 'Le Regioni possono variare l’aliquota entro ±0,92 punti (fino a ~4,82%) o azzerarla per settori. Manovra 2026: aumenti solo per banche, finanziarie e assicurazioni.',
+  },
+  dividendo: {
+    value: 0.26, unit: 'perc',
+    label: 'Dividendi a persona fisica non imprenditore — imposta sostitutiva / ritenuta a titolo d’imposta',
+    fonte: 'Fiscomania — Tassazione dividendi 2026',
+    url: 'https://fiscomania.com/tassazione-dividendi/',
+    nota: 'Stessa aliquota per partecipazioni qualificate e non qualificate dal 1/1/2018 (L. 205/2017). Ritenuta definitiva: nessuna dichiarazione, nessuna addizionale. Il regime transitorio per utili prodotti fino al 2017 (delibere entro il 31/12/2022) è scaduto.',
+  },
+  irpefScaglioni: {
+    value: [[28000, 0.23], [50000, 0.33], [Infinity, 0.43]], unit: 'scaglioni',
+    label: 'IRPEF — scaglioni e aliquote 2026',
+    fonte: 'EC News — Legge di Bilancio 2026, revisione aliquote IRPEF',
+    url: 'https://www.ecnews.it/lavoro/news-del-giorno/legge-bilancio-2026-revisione-aliquote-irpef/',
+    nota: 'L. 199/2025: 2° scaglione ridotto dal 35% al 33%. 23% fino a 28.000 €; 33% da 28.001 a 50.000 €; 43% oltre 50.000 €. Redditi > 200.000 €: beneficio sterilizzato con −440 € di detrazioni al 19%.',
+  },
+  addizionaliIrpef: {
+    value: 0.02, unit: 'perc',
+    label: 'Addizionali IRPEF regionale + comunale — stima',
+    fonte: 'MEF — Fiscalità regionale e locale (valore indicativo)',
+    url: 'https://www.finanze.gov.it/it/fiscalita-regionale-e-locale/addizionale-regionale-allirpef/',
+    nota: 'Media indicativa ~1,7–2,3%. Dipende da Regione e Comune di residenza: verifica le aliquote effettive.',
+  },
+  detrazioneLavoroDip: {
+    value: 1955, unit: 'euro',
+    label: 'Detrazione massima lavoro dipendente e assimilato (art. 13 co. 1 TUIR)',
+    fonte: 'Fiscomania — Detrazioni redditi da lavoro dipendente',
+    url: 'https://fiscomania.com/detrazioni-per-redditi-da-lavoro-dipendente/',
+    nota: 'Max 1.955 € fino a 15.000 € di reddito, poi decrescente fino ad azzerarsi a 50.000 €. Spetta anche all’amministratore (compenso = reddito assimilato, art. 50 co. 1 lett. c-bis TUIR). Non tiene conto della riforma del cuneo fiscale 2025 (bonus sotto i 20.000 €, detrazione aggiuntiva 20.000–40.000 €).',
+  },
+  gestioneSeparata: {
+    value: 0.3372, unit: 'perc',
+    label: 'Gestione Separata INPS — amministratore senza altra copertura previdenziale (2026)',
+    fonte: 'INPS — Circolare n. 8 del 3/2/2026',
+    url: 'https://www.inps.it/it/it/inps-comunica/notizie/dettaglio-news-page.news.2026.02.gestione-separata-le-aliquote-contributive-per-il-2026.html',
+    nota: '33,72% (33,00% IVS + 0,72% aliquote minori). 24% se già pensionato o con altra copertura obbligatoria; 35,03% con DIS-COLL; 26,07% professionisti con partita IVA senza cassa.',
+  },
+  gsMassimale: {
+    value: 122295, unit: 'euro',
+    label: 'Massimale contributivo annuo Gestione Separata 2026',
+    fonte: 'FISCOeTASSE — Gestione separata INPS 2026',
+    url: 'https://www.fiscoetasse.com/new-rassegna-stampa/3491-gestione-separata-inps-2026-aliquote-e-massimali-contributivi.html',
+    nota: 'Oltre il massimale non si versano contributi. Minimale 2026: 18.808 €.',
+  },
+  gsQuotaCollaboratore: {
+    value: 1 / 3, unit: 'perc',
+    label: 'Quota contributi Gestione Separata a carico dell’amministratore',
+    fonte: 'La Legge per Tutti — Gestione Separata INPS 2026',
+    url: 'https://www.laleggepertutti.it/787972_gestione-separata-inps-2026-aliquote-massimale-e-chi-deve-iscriversi',
+    nota: 'Ripartizione: 1/3 a carico del collaboratore/amministratore, 2/3 a carico della società committente (che versa con F24).',
+    locked: true,
+  },
+  compensoAmmCassa: {
+    value: 1, unit: 'num',
+    label: 'Deducibilità del compenso amministratore — principio di cassa (art. 95 co. 5 TUIR)',
+    fonte: 'EC News — Deducibilità compenso amministratori e cassa allargata',
+    url: 'https://www.ecnews.it/fiscale/fisco-e-patrimonio/reddito-impresa-e-irap/la-deducibilita-del-compenso-amministratori-e-il-principio-di-cassa-allargato/',
+    nota: 'Deducibile IRES per cassa; per l’amministratore con reddito assimilato vale la cassa allargata (pagamento entro il 12 gennaio dell’anno successivo). Il compenso co.co.co. NON è deducibile IRAP; lo è se l’amministratore fattura con partita IVA. Serve delibera che determina il compenso.',
+    locked: true,
+  },
+  tfmDataCerta: {
+    value: 1, unit: 'num',
+    label: 'TFM — deduzione per competenza subordinata ad atto di data certa anteriore all’inizio del rapporto',
+    fonte: 'Fiscomania — Trattamento di fine mandato',
+    url: 'https://fiscomania.com/trattamento-fine-mandato/',
+    nota: 'Cassazione costante (26431/2018, 24848/2020, 19445/2021): senza atto di data certa anteriore (delibera o clausola nell’atto di nomina, con PEC/raccomandata/registrazione/notaio) la deduzione dell’accantonamento spetta solo per cassa all’erogazione.',
+    locked: true,
+  },
+  tfmCap: {
+    value: 1000000, unit: 'euro',
+    label: 'TFM — soglia oltre la quale decade la tassazione separata (art. 24 co. 31 DL 201/2011)',
+    fonte: 'Soluzione Tasse — TFM SRL guida',
+    url: 'https://www.soluzionetasse.com/tfm-srl-guida/',
+    nota: 'Con data certa anteriore, la percezione del TFM è soggetta a tassazione separata (art. 17 co. 1 lett. c + art. 21 TUIR). La quota eccedente 1.000.000 € è comunque a tassazione ordinaria. Senza data certa: tassazione ordinaria IRPEF nell’anno di percezione.',
+    locked: true,
+  },
+  autoKmConvenzionali: {
+    value: 15000, unit: 'num',
+    label: 'Fringe benefit auto — percorrenza convenzionale annua',
+    fonte: 'FiscoOggi (Agenzia Entrate) — Tabelle ACI 2026 in Gazzetta',
+    url: 'https://www.fiscooggi.it/portale/-/fringe-benefit-auto-aziendali-in-gazzetta-le-tabelle-2026-dell-aci',
+    nota: 'Fissata per legge (art. 51 co. 4 lett. a TUIR). Base imponibile = % ACI × costo km ACI del modello × 15.000, al netto di quanto trattenuto o fatturato al dipendente.',
+    locked: true,
+  },
+  autoPercBEV: {
+    value: 0.10, unit: 'perc',
+    label: 'Fringe benefit auto — % ACI elettrico puro (BEV), assegnazione 2026',
+    fonte: 'Welfare Group — Tabelle ACI fringe benefit 2026',
+    url: 'https://www.welfaregroup.it/2026/07/24/tabelle-aci-fringe-benefit-2026-guida-completa/',
+    nota: 'Regime per tipo di alimentazione (L. 207/2024 art. 1 co. 48). I regimi transitori legati alle fasce di CO₂ sono chiusi dal 30/6/2025 e non si applicano alle assegnazioni 2026.',
+    locked: true,
+  },
+  autoPercPHEV: {
+    value: 0.20, unit: 'perc',
+    label: 'Fringe benefit auto — % ACI ibrido plug-in (PHEV), assegnazione 2026',
+    fonte: 'Welfare Group — Tabelle ACI fringe benefit 2026',
+    url: 'https://www.welfaregroup.it/2026/07/24/tabelle-aci-fringe-benefit-2026-guida-completa/',
+    nota: 'Regime per tipo di alimentazione (L. 207/2024 art. 1 co. 48), contratti dal 1/1/2025 su veicoli di nuova immatricolazione.',
+    locked: true,
+  },
+  autoPercAltri: {
+    value: 0.50, unit: 'perc',
+    label: 'Fringe benefit auto — % ACI benzina / diesel / GPL / metano / full-mild hybrid, assegnazione 2026',
+    fonte: 'EC News — Auto in uso promiscuo, fringe benefit e regime transitorio',
+    url: 'https://www.ecnews.it/fiscale/fisco-e-patrimonio/imposte-sul-reddito/auto-in-uso-promiscuo-al-dipendente-fringe-benefit-variabile-in-base-alleta-del-veicolo/',
+    nota: 'Regime per tipo di alimentazione (L. 207/2024 art. 1 co. 48). Per auto assegnate prima del 2025 resta il vecchio regime a fasce di CO₂ (25/30/50/60%).',
+    locked: true,
+  },
+  autoDedDipendente: {
+    value: 0.70, unit: 'perc',
+    label: 'Deducibilità azienda — auto in uso promiscuo al dipendente per la maggior parte del periodo (art. 164 co. 1 lett. b-bis TUIR)',
+    fonte: 'MySolution — Auto in uso promiscuo ai dipendenti, deducibilità al 70%',
+    url: 'https://www.mysolution.it/fisco/approfondimenti/commenti/20232/04/auto-in-uso-promiscuo-ai-dipendenti-con-deducibilita-al-70-bomben/',
+    nota: '70% senza tetto sul costo. Non spetta all’amministratore co.co.co.: in quel caso è deducibile l’importo pari al fringe benefit come compenso in natura + 20% dell’eccedenza con i tetti (art. 164 co. 1 lett. b).',
+    locked: true,
+  },
+  autoDedAmministratore: {
+    value: 0.20, unit: 'perc',
+    label: 'Deducibilità azienda — auto all’amministratore, quota eccedente il fringe benefit (art. 164 co. 1 lett. b TUIR)',
+    fonte: 'Studio Di Mauro — Deducibilità auto per le SRL 2026',
+    url: 'https://www.massimodimauro.it/settori/fisco/deducibilita-auto-per-le-s-r-l-regole-percentuali-e-cosa-sapere-nel-2026/',
+    nota: 'Deducibile il valore del fringe benefit come compenso in natura + 20% sull’eccedenza, con tetto di rilevanza del costo (18.075,99 € per acquisto).',
+    locked: true,
+  },
+  ivaAutoPromiscuo: {
+    value: 0.40, unit: 'perc',
+    label: 'Detraibilità IVA — auto in uso promiscuo',
+    fonte: 'Missionline — Detrazione IVA delle auto aziendali',
+    url: 'https://www.missionline.it/mission-fleet-post/detrazione-iva-delle-auto-aziendali/',
+    nota: '40% in via generale; 100% se l’azienda addebita al dipendente un corrispettivo con IVA almeno pari al valore normale. Il riaddebito incide solo sull’IVA, non aumenta la deducibilità IRES (resta 70%).',
+    locked: true,
+  },
+  buoniPastoCartacei: {
+    value: 4.00, unit: 'euro',
+    label: 'Buono pasto cartaceo — limite giornaliero di esenzione (art. 51 co. 2 lett. c TUIR)',
+    fonte: 'FISCOeTASSE — Buoni pasto 2026',
+    url: 'https://www.fiscoetasse.com/approfondimenti/17162-buoni-pasto-2026-natura-giuridica-regime-fiscale-e-novita.html',
+    nota: 'Invariato a 4,00 €. L’eccedenza concorre al reddito (IRPEF + contributi).',
+    locked: true,
+  },
+  buoniPastoElettronici: {
+    value: 10.00, unit: 'euro',
+    label: 'Buono pasto elettronico — limite giornaliero di esenzione (dal 1/1/2026)',
+    fonte: 'Pluxee — Buoni pasto 10 euro, novità 2026',
+    url: 'https://www.pluxee.it/blog/buoni-pasto-10-euro-novita-2026/',
+    nota: 'Aumentato da 8,00 € a 10,00 € dal 1/1/2026 (L. 199/2025). L’eccedenza concorre al reddito.',
+    locked: true,
+  },
+  fringeSogliaOrdinaria: {
+    value: 258.23, unit: 'euro',
+    label: 'Soglia ordinaria a regime di esenzione fringe benefit (art. 51 co. 3 TUIR)',
+    fonte: 'Edotto — Soglia fringe benefit 2026',
+    url: 'https://www.edotto.com/articolo/per-il-2026-soglia-a-1000-o-2000-euro-per-i-fringe-benefit',
+    nota: 'Valore che tornerebbe applicabile in assenza dei regimi rafforzati temporanei.',
+  },
+  fringeSoglia2026: {
+    value: 1000, unit: 'euro',
+    label: 'Soglia esenzione fringe benefit 2026 — generale',
+    fonte: 'Studio Bongiorni — Fringe benefit, soglia 1.000/2.000 € confermata per il 2026',
+    url: 'https://studiobongiorni.eu/it/fringe-benefit-soglia-elevata-a-1-000-e-2-000-euro-confermata-anche-per-il-2026/',
+    nota: 'Regime rafforzato 2025–2026–2027 (L. 207/2024 art. 1 co. 390-391). Comprende anche rimborso/pagamento di utenze domestiche, affitto o interessi sul mutuo della prima casa. Si applica anche agli amministratori (redditi assimilati).',
+  },
+  fringeSoglia2026Figli: {
+    value: 2000, unit: 'euro',
+    label: 'Soglia esenzione fringe benefit 2026 — dipendenti con figli fiscalmente a carico',
+    fonte: 'Studio Bongiorni — Fringe benefit, soglia 1.000/2.000 € confermata per il 2026',
+    url: 'https://studiobongiorni.eu/it/fringe-benefit-soglia-elevata-a-1-000-e-2-000-euro-confermata-anche-per-il-2026/',
+    nota: 'Richiede dichiarazione del lavoratore con codice fiscale dei figli. Regola della franchigia azzerata: superata la soglia, l’INTERO importo concorre al reddito, non solo l’eccedenza.',
+  },
+  contribDipendenteQuota: {
+    value: 0.0919, unit: 'perc',
+    label: 'Contributi INPS a carico del lavoratore dipendente (settore privato)',
+    fonte: 'Centro Fiscale — Contributi INPS in busta paga 2026',
+    url: 'https://centrofiscale.com/contributi-inps-busta-paga-2026/',
+    nota: '~9,19% (9,49% sulla quota eccedente la prima fascia di retribuzione pensionabile, ~55.000 €).',
+  },
+  contribDatoreQuota: {
+    value: 0.30, unit: 'perc',
+    label: 'Contributi INPS a carico del datore di lavoro — costo pieno stimato',
+    fonte: 'Centro Fiscale — Contributi INPS in busta paga 2026',
+    url: 'https://centrofiscale.com/contributi-inps-busta-paga-2026/',
+    nota: '~23,81% IVS; il costo aziendale effettivo sale a ~27–30% con NASpI, INAIL e fondi minori, secondo CCNL e dimensione.',
+  },
+  rimborsoKmTrasferte: {
+    value: 1, unit: 'num',
+    label: 'Rimborso chilometrico per trasferte con tabelle ACI — non concorre al reddito',
+    fonte: 'Missionline — Rimborsi trasferte, nuove regole 2026',
+    url: 'https://www.missionline.it/tassazione-rimborsi-spese-per-trasferte-e-missioni-esclusi-dal-reddito-con-nuove-regole-2026/',
+    nota: 'Il rimborso km calcolato sulle tabelle ACI non concorre al reddito (anche per trasferte nel Comune dal 2025) se documentato. Le altre spese di trasferta (vitto, alloggio, viaggio) dal 2025 sono esenti e deducibili solo se pagate con strumenti tracciabili (L. 207/2024 co. 81-83).',
+    locked: true,
+  },
+};
+
+export function rate(key) {
+  const r = RATES[key];
+  if (!r) throw new Error('rate mancante: ' + key);
+  return r.value;
+}

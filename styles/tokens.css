@@ -1,0 +1,84 @@
+/* conti · srl — identità visiva: il registro contabile.
+   Tema unico chiaro, deliberato. Bordi netti, nessuna ombra decorativa,
+   ogni numero in monospazio tabellare. */
+
+:root {
+  --paper:        #f3f4f1;
+  --surface:      #fbfbf9;
+  --surface-2:    #eef0ec;
+  --ink:          #1b1e26;
+  --ink-soft:     #3b3f49;
+  --muted:        #6b7166;
+  --rule:         #d5d8d1;
+  --rule-strong:  #b9bdb4;
+  --margin-rule:  #b23b3b;
+  --accent:       #1f6f43;
+  --accent-weak:  #e4efe7;
+  --cost:         #a8403a;
+  --cost-weak:    #f2e3e1;
+  --focus:        #1256c4;
+
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "JetBrains Mono", "Cascadia Code", Menlo, Consolas, "Liberation Mono", monospace;
+
+  --maxw: 1100px;
+  --radius: 2px;
+  --gap: 1rem;
+}
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+h1, h2, h3 { font-weight: 650; line-height: 1.2; margin: 0 0 .5em; letter-spacing: -0.01em; }
+h1 { font-size: 1.5rem; }
+h2 { font-size: 1.05rem; }
+h3 { font-size: .95rem; }
+
+a { color: var(--focus); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+p { margin: 0 0 .8em; }
+
+button {
+  font: inherit;
+  cursor: pointer;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--radius);
+  padding: .3rem .7rem;
+}
+button:hover { background: var(--surface-2); }
+
+input[type="text"], select {
+  font-family: var(--font-mono);
+  font-size: .92rem;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--radius);
+  padding: .38rem .5rem;
+  width: 100%;
+}
+input[type="text"] { text-align: right; }
+select { font-family: var(--font-sans); }
+
+input:focus-visible, select:focus-visible, a:focus-visible, button:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 1px;
+}
+
+:where(.ct__num, .field__unit, .topbar__agg-value, .delta__value, .breakeven__scale, .fonti__valore) {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
