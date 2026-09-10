@@ -4,6 +4,9 @@ Dashboard di calcolatori per l'**ottimizzazione fiscale legale di una SRL italia
 HTML + CSS + JavaScript puro: nessun framework, nessuno step di build, nessuna
 dipendenza esterna. Tutti i calcoli girano nel browser; nessun dato lascia il dispositivo.
 
+https://sergiopovoli.github.io/calcolatled/
+
+
 ## Calcolatori
 
 ### Compensi e utili — confronto SRL vs socio/amministratore
