@@ -1,10 +1,16 @@
 # CalcolAtled
+<<<<<<< HEAD
 
 **CalcolAtled** — dalla fusione di *calcolatrice* e *ATLED*, il nome dell'azienda.
+=======
+>>>>>>> cf56a0d827a55b57646677528ac86f01a3257510
 
 Dashboard di calcolatori per l'**ottimizzazione fiscale legale di una SRL italiana**.
 HTML + CSS + JavaScript puro: nessun framework, nessuno step di build, nessuna
 dipendenza esterna. Tutti i calcoli girano nel browser; nessun dato lascia il dispositivo.
+
+https://sergiopovoli.github.io/calcolatled/
+
 
 ## Calcolatori
 
